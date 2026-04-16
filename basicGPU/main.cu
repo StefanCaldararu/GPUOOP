@@ -48,12 +48,12 @@ int main() {
         for (int j = 0; j < N; j++) {
             if (h_C[i * N + j] != (i == j ? 1.0f : 0.0f) ){
                 failed = true;
-                printf("Error: h_C[%d][%d] = %f\n", i, j, h_C[i * N + j]);
+                printf("Basic GPU Matmul: Error: h_C[%d][%d] = %f\n", i, j, h_C[i * N + j]);
             }
         }
     }
     if(!failed){
-        printf("Success!\n");
+        printf("Basic GPU Matmul: Success!\n");
     }
 
     free(h_A); free(h_B); free(h_C);
