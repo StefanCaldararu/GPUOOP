@@ -69,6 +69,34 @@ std::vector<std::vector<float>> GPUMatrix::matmulImpl(const GPUMatrix& other) co
     return ret;
 }
 
+std::vector<std::vector<float>> GPUMatrix::getData() const {
+    std::vector<float> flat(n * n);
+    cudaMemcpy(flat.data(), data, n * n * sizeof(float), cudaMemcpyDeviceToHost);
+    std::vector<std::vector<float>> result(n, std::vector<float>(n));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            result[i][j] = flat[i * n + j];
+        }
+    }
+    return result;
+}
+
+void GPUMatrix::setData(const std::vector<std::vector<float>>& hostData) {
+    std::vector<float> flat(n * n);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            flat[i * n + j] = hostData[i][j];
+        }
+    }
+    cudaMemcpy(data, flat.data(), n * n * sizeof(float), cudaMemcpyHostToDevice);
+}
+
+float GPUMatrix::getIndividualData(int i, int j) const {
+    float value;
+    cudaMemcpy(&value, data + (i * n + j), sizeof(float), cudaMemcpyDeviceToHost);
+    return value;
+}
+
 int GPUMatrix::size() const {
     return n;
 }
