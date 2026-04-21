@@ -23,7 +23,7 @@ int main() {
         {7, 8}
     };
 
-    CPUMatrix A(A_data);
+    GPUMatrix A(A_data);
     CPUMatrix B(B_data);
 
     std::vector<std::vector<float>> C = A.matmul(B);
