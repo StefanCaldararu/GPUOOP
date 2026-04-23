@@ -23,6 +23,7 @@ public:
 private:
     int n;
     float* data;
+    float* result;
 };
 
 #endif

@@ -17,6 +17,7 @@ __global__ void matrixMul(float* A, float* B, float* C, int N) {
 
 GPUMatrix::GPUMatrix(int n) : n(n){
     cudaMalloc((void**)&data, n * n * sizeof(float));
+    cudaMalloc((void**)&result, n * n * sizeof(float));
 }
 
 GPUMatrix::GPUMatrix(const std::vector<std::vector<float>>& data) : GPUMatrix(data.size()) {
@@ -34,14 +35,15 @@ GPUMatrix::GPUMatrix(const std::vector<std::vector<float>>& data) : GPUMatrix(da
 
 GPUMatrix::~GPUMatrix(){
     cudaFree(data);
+    cudaFree(result);
 }
 
 std::vector<std::vector<float>> GPUMatrix::matmul(const GPUMatrix& other) const{
     if(other.size() != n){
         throw std::runtime_error("Matrix size mismatch in matmul");
     }
-    float* result;
-    cudaMalloc((void**)&result, n * n * sizeof(float));
+
+    cudaMemset(result, 0, n * n * sizeof(float));
 
     dim3 threadsPerBlock(16, 16);
     dim3 numBlocks((n + threadsPerBlock.x - 1) / threadsPerBlock.x, (n + threadsPerBlock.y - 1) / threadsPerBlock.y);
@@ -57,7 +59,6 @@ std::vector<std::vector<float>> GPUMatrix::matmul(const GPUMatrix& other) const{
         for (int j=0;j<n;j++)
             ret[i][j] = flat[i*n+j];
 
-    cudaFree(result);
     return ret;
 }
 
@@ -65,9 +66,10 @@ int GPUMatrix::size() const {
     return n;
 }
 
-GPUMatrix::GPUMatrix(GPUMatrix&& other) noexcept : n(other.n), data(other.data){
+GPUMatrix::GPUMatrix(GPUMatrix&& other) noexcept : n(other.n), data(other.data), result(other.result){
     other.n = 0;
     other.data = nullptr;
+    other.result = nullptr;
 }
 
 GPUMatrix& GPUMatrix::operator=(GPUMatrix&& other) noexcept {
@@ -75,19 +77,26 @@ GPUMatrix& GPUMatrix::operator=(GPUMatrix&& other) noexcept {
         if (data) {
             cudaFree(data);
         }
+        if(result){
+            cudaFree(result);
+        }
 
         n = other.n;
         data = other.data;
+        result = other.result;
 
         other.n = 0;
         other.data = nullptr;
+        other.result = nullptr;
     }
     return *this;
 }
 
-GPUMatrix::GPUMatrix(const GPUMatrix& other) : n(other.n), data(nullptr) {
+GPUMatrix::GPUMatrix(const GPUMatrix& other) : n(other.n), data(nullptr), result(nullptr) {
     cudaMalloc((void**)&data, n * n * sizeof(float));
     cudaMemcpy(data, other.data, n * n * sizeof(float), cudaMemcpyDeviceToDevice);
+    cudaMalloc((void**)&result, n * n * sizeof(float));
+    cudaMemcpy(result, other.result, n * n * sizeof(float), cudaMemcpyDeviceToDevice);
 }
 
 GPUMatrix& GPUMatrix::operator=(const GPUMatrix& other) {
@@ -95,11 +104,16 @@ GPUMatrix& GPUMatrix::operator=(const GPUMatrix& other) {
         if (data) {
             cudaFree(data);
         }
+        if(result) {
+            cudaFree(result);
+        }
 
         n = other.n;
 
         cudaMalloc((void**)&data, n * n * sizeof(float));
         cudaMemcpy(data, other.data, n * n * sizeof(float), cudaMemcpyDeviceToDevice);
+        cudaMalloc((void**)&result, other.result, n * n * sizeof(float));
+        cudaMemcpy(result, other.result, n * n * sizeof(float), cudaMemcpyDeviceToDevice);
     }
 
     return *this;
