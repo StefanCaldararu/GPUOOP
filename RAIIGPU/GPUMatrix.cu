@@ -112,7 +112,7 @@ GPUMatrix& GPUMatrix::operator=(const GPUMatrix& other) {
 
         cudaMalloc((void**)&data, n * n * sizeof(float));
         cudaMemcpy(data, other.data, n * n * sizeof(float), cudaMemcpyDeviceToDevice);
-        cudaMalloc((void**)&result, other.result, n * n * sizeof(float));
+        cudaMalloc((void**)&result, n * n * sizeof(float));
         cudaMemcpy(result, other.result, n * n * sizeof(float), cudaMemcpyDeviceToDevice);
     }
 
