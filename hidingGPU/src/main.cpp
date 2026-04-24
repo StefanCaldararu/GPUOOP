@@ -26,7 +26,7 @@ int main() {
     GPUMatrix A(A_data);
     CPUMatrix B(B_data);
 
-    std::vector<std::vector<float>> C = A.matmul(B);
+    std::vector<std::vector<float>> vec = A.matmul(B);
 
     bool failed = false;
     for(int i = 0; i < vec.size(); i++){
