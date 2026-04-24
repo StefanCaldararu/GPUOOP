@@ -7,8 +7,8 @@ This project focuses on CUDA programming, and as such requires an NVIDIA GPU. Gi
 ### System Requirements
 You must have a system with an NVIDIA GPU, CUDA Toolkit v12.8 installed. Instructions on installing the CUDA Toolkit can be found [here](https://developer.nvidia.com/cuda-12-8-0-download-archive). Given that the developer does not have access to such a system, minimal instructions on building are included for local compilation and testing.
 
-### Compiling Examples 1-3
-For the first three examples, compilation is done directly through the `nvcc` compiler. Compilation commands can be found in the Jupyter Notebook provided [here](./Cuda.ipynb)
+### Compiling Examples
+For the first three examples, compilation is done directly through the `nvcc` compiler. Compilation for the final example is done through the `cmake` file provided. Compilation commands can be found in the Jupyter Notebook provided [here](./Cuda.ipynb).
 
 ## Running through Google Colab
 To run the code on Google Colab, visit the [Colab Developer Website](https://developers.google.com/colab), ensure you are logged in to google, and open colab by clicking the link in the top right corner. Following this, select the "create new notebook" option. Select "file -> Open Notebook -> Upload -> browse" and select the downloaded [Cuda.ipynb](./Cuda.ipynb) file. In the top right corner, select "Connect T4" to connect to a GPU-enabled runtime. If this option doesn't appear at first, select the dropdown menu to the right and select "Change Runtime Type" to select the T4 runtime. Once connected, run each code block individually to enable the `nvcc` compiler, clone the repository, and run each example individually!
