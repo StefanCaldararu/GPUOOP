@@ -19,8 +19,8 @@ int main() {
     };
 
     std::vector<std::vector<float>> B_data = {
-        {5, 6},
-        {7, 8}
+        {1, 0},
+        {0, 1}
     };
 
     GPUMatrix A(A_data);
@@ -28,8 +28,19 @@ int main() {
 
     std::vector<std::vector<float>> C = A.matmul(B);
 
-    std::cout << "Result of A x B:" << std::endl;
-    printMatrix(C);
+    bool failed = false;
+    for(int i = 0; i < vec.size(); i++){
+        for(int j = 0; j < vec[i].size(); j++){
+            if(vec[i][j] != result[i][j]){
+                failed = true;
+                std::cout << " GPU Matmul Class: Error" << std::endl;
+            }
+        }
+    }
+
+    if(!failed){
+        std::cout << "GPU Matmul Class: Success!" << std::endl;
+    }
 
     return 0;
 }
