@@ -13,13 +13,13 @@ int main() {
         for(int j = 0; j < vec[i].size(); j++){
             if(vec[i][j] != result[i][j]){
                 failed = true;
-                std::cout << " GPU Matmul Class: Error" << std::endl;
+                std::cout << " GPU Matmul Class: Error in matrix computation" << std::endl;
             }
         }
     }
 
     if(!failed){
-        std::cout << "GPU Matmul Class: Success!" << std::endl;
+        std::cout << "GPU Matmul Class: Successfully multiplied matrices on GPU through classes, and got expected result!" << std::endl;
     }
 
     return 0;

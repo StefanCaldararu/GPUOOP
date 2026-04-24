@@ -41,7 +41,7 @@ int main() {
     }
 
     if(!failed){
-        std::cout << "GPU Matmul Class: Success!" << std::endl;
+        std::cout << "Hiding GPU Matmul Class: Successfully multiplied CPU Matrix by GPU Matrix!" << std::endl;
     }
 
     return 0;

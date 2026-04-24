@@ -5,7 +5,8 @@
 int main() {
     std::vector<std::vector<float>> vec = {{1., 0.}, {0., 1.}};
     GPUMatrix mat1(vec);
-    GPUMatrix mat2 = mat1;
+    GPUMatrix mat2 = mat1; //copy constructor!
+    std::cout << "GPU RAII Matmul Class: Successfully used the Copy Constructor!" << std::endl;
     std::vector<std::vector<float>> result = mat1.matmul(mat2);
     
     bool failed = false;
@@ -19,7 +20,7 @@ int main() {
     }
 
     if(!failed){
-        std::cout << "GPU Matmul Class: Success!" << std::endl;
+        std::cout << "GPU RAII Matmul Class: Successfully multiplied matrices!" << std::endl;
     }
 
     return 0;

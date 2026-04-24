@@ -53,7 +53,7 @@ int main() {
         }
     }
     if(!failed){
-        printf("Basic GPU Matmul: Success!\n");
+        printf("Basic GPU Matmul: Successfully multiplied matricies on the GPU, and got expected result!\n");
     }
 
     free(h_A); free(h_B); free(h_C);
